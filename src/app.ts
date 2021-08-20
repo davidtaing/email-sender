@@ -1,12 +1,7 @@
-// require('dotenv').config();
-
 import * as dotenv from 'dotenv';
 import * as sgMail from '@sendgrid/mail';
 
 dotenv.config();
-
-// using Twilio SendGrid's v3 Node.js Library
-// https://github.com/sendgrid/sendgrid-nodejs
 sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 
 const msg = {
