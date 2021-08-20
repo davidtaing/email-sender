@@ -41,3 +41,5 @@ function sendEmail(msg) {
       console.error(error);
     });
 }
+
+dataArray.forEach(email => sendEmail(email));
