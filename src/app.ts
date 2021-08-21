@@ -5,7 +5,6 @@ import * as sgMail from '@sendgrid/mail';
 import * as XLSX from 'XLSX';
 
 sgMail.setApiKey(process.env.SENDGRID_API_KEY);
-
 const XLSX_PATH: string = process.env.DATA_SOURCE_XLSX;
 
 const inputXlsxData = loadXlsxToJSON();
@@ -21,7 +20,7 @@ function sendEmail(msg) {
     });
 }
 
-function loadXlsxToJSON(path: string = XLSX_PATH) : XLSX.WorkSheet {
+function loadXlsxToJSON(path: string = XLSX_PATH) {
   try {
     let wb = XLSX.readFile(path);
     let firstSheetName = wb.SheetNames[0]
@@ -38,4 +37,4 @@ function loadXlsxToJSON(path: string = XLSX_PATH) : XLSX.WorkSheet {
   }
 }
 
-// dataArray.forEach(email => sendEmail(email));
+console.log(inputXlsxData);
