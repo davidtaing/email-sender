@@ -16,12 +16,11 @@ export interface Email {
 }
 
 // Init Email object to send to the SendGrid Email API
-export function createEmail({
+export function createEmail(
   firstName, 
   to, 
   property, 
-  filepaths
-}, 
+  filepaths, 
   from = FROM_EMAIL, 
   templateId = TEMPLATE_ID,
 ): Email {

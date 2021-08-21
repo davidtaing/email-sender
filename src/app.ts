@@ -3,11 +3,15 @@ dotenv.config();
 
 import * as sgMail from '@sendgrid/mail';
 import * as XLSX from 'XLSX';
+import { createEmail } from './Email';
 
 sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 const XLSX_PATH: string = process.env.DATA_SOURCE_XLSX;
 
-const inputXlsxData = loadXlsxToJSON();
+const parsedEmailData = loadXlsxToJSON().map((data: any) => {
+  let { firstName, to, property, filepaths } = data;
+  return createEmail(firstName, to, property, filepaths);
+})
 
 function sendEmail(msg) {
   sgMail
@@ -30,11 +34,12 @@ function loadXlsxToJSON(path: string = XLSX_PATH) {
       throw 'Failed to load spreadsheet.';
     }
 
-    return XLSX.utils.sheet_to_json(ws);
+    return XLSX.utils.sheet_to_json(ws, {raw: false});
   } catch (e) {
     console.log("Error occured while loading spreadsheet.");
     console.log(e);
   }
 }
 
-console.log(inputXlsxData);
+// Output parsed data.
+console.log(parsedEmailData);
