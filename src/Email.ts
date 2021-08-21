@@ -6,5 +6,5 @@ export interface Email {
   subject: string;
   text?: string;
   html?: string;
-  attachment?: Attachment;
+  attachments?: Attachment[];
 }
