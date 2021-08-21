@@ -1,6 +1,6 @@
 import { readFile } from "fs/promises";
 import * as path from "path";
-import { mime } from "mime-types";
+import * as mime from "mime-types";
 
 export interface Attachment {
   content: string;
@@ -16,14 +16,13 @@ export function loadAttachment(filepath: string): Attachment {
       const attachment: Attachment = {
         content: data.toString('base64'),
         filename: path.basename(filepath),
-        type: mime.lookup(filepath),
+        type: mime.lookup(path.basename(filepath)),
       }
       return attachment;
     })
     .catch((err) => {
       console.log("Failed to load attachment");
       console.log(err);
-    });
-
-    return null;
+    })
+    .finally(() => null);
 };
