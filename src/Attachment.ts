@@ -10,7 +10,7 @@ export interface Attachment {
   content_id?: string;
 }
 
-export function LoadAttachment(filepath: string): Attachment {
+export function loadAttachment(filepath: string): Attachment {
   readFile(filepath)
     .then((data) => {
       const attachment: Attachment = {

@@ -3,7 +3,7 @@ import { Attachment } from './Attachment';
 export interface Email {
   to: string;
   from: string;
-  subjec?: string;
+  subject?: string;
   text?: string;
   html?: string;
   attachments?: Attachment[];
@@ -12,7 +12,7 @@ export interface Email {
 }
 
 // This is intended to help me plan on how to create a data structure for our Email POJO
-export function CreateEmail(): Email {
+export function createEmail({firstName, to, property, filepaths}): Email {
   return {
     to: '',
     from: '',
