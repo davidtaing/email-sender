@@ -7,8 +7,8 @@ export interface Email {
   text?: string;
   html?: string;
   attachments?: Attachment[];
-  templateId: string;
-  dymanicTemplateData: {};
+  templateId?: string;
+  dynamicTemplateData?: {};
 }
 
 // This is intended to help me plan on how to create a data structure for our Email POJO
@@ -25,7 +25,7 @@ export function CreateEmail(): Email {
       }
     ],
     templateId: '',
-    dymanicTemplateData: {
+    dynamicTemplateData: {
       firstName: '',
       property: '',
     }
