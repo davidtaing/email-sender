@@ -8,28 +8,8 @@ import { Email, createEmail } from "./Email";
 sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 const XLSX_PATH: string = process.env.DATA_SOURCE_XLSX;
 
-const RAW_XLSX_DATA = loadXLSXToJSON(XLSX_PATH);
-
-const PARSED_EMAIL_DATA = 
-  parseEmailsFromXLSX(RAW_XLSX_DATA)
-    .then(
-      data => Promise.resolve(data)
-    )
-    .catch(e => {
-      console.log("Failed to parse spreadsheet data.");
-      console.log(e);
-    });
-
-function sendEmail(msg) {
-  sgMail
-    .send(msg)
-    .then(() => {
-      console.log("Email sent");
-    })
-    .catch((error) => {
-      console.error(error);
-    });
-}
+let RAW_XLSX_DATA;
+let PARSED_EMAIL_DATA;
 
 // Loads XLSX spreadsheet and Parses to JSON
 function loadXLSXToJSON(path: string = XLSX_PATH) {
@@ -44,24 +24,49 @@ function loadXLSXToJSON(path: string = XLSX_PATH) {
 
     return XLSX.utils.sheet_to_json(ws, {raw: false});
   } catch (e) {
-    console.log("Error occured while loading spreadsheet.");
-    console.log(e);
+    console.log("An error occured while loading spreadsheet.");
+    console.error(e);
   }
 }
 
 // Parses spreadsheet data into SendGrid Email API POJO (or Email Objects)
 async function parseEmailsFromXLSX(data = RAW_XLSX_DATA) {
-  let emails : Array<Email> = [];
+  try {
+    let emails : Array<Email> = [];
 
-  let item : any;
-  for (item of data) {
-    let { firstName, to, property, filepaths } = item;
-
-    emails.push(await createEmail(firstName, to, property, filepaths));
+    let item : any;
+    for (item of data) {
+      let { firstName, to, property, filepaths } = item;
+      emails.push(await createEmail(firstName, to, property, filepaths));
+    }
+    return emails;
+  } catch (err) {
+    console.log("An error occured while loading the emails.");
+    console.error(err);
   }
-  
-  return emails;
 };
 
-// Output parsed data.
-console.log(PARSED_EMAIL_DATA);
+// Loads and parses email data. Internally calls loadXLSXToJson and parseEmailsFromXLSX
+async function initEmailData(path: string = XLSX_PATH) {
+  RAW_XLSX_DATA = loadXLSXToJSON(path);
+  PARSED_EMAIL_DATA = await parseEmailsFromXLSX(RAW_XLSX_DATA);
+}
+
+function sendEmail(msg) {
+  try {
+    sgMail.send(msg)
+      .then(() => console.log("Successfully sent email."));
+
+  } catch (err) {
+    console.log("An error occured while sending an email.");
+    console.error(err);
+  }
+}
+
+async function main() : Promise<void> {
+  await initEmailData();
+
+  console.log(PARSED_EMAIL_DATA);
+}
+
+main();
