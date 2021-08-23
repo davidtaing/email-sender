@@ -12,7 +12,7 @@ export interface Attachment {
 
 // Loads attachment from desinated filepath and parses into an POJO (Attachment object).
 // Assumes single filepath.
-export async function loadAttachment(filepath: string) {
+export async function loadAttachment(filepath: string) : Promise<Attachment> {
   try {
     // load file
     let data : Buffer = await readFile(filepath);
@@ -24,7 +24,7 @@ export async function loadAttachment(filepath: string) {
       type: mime.lookup(path.basename(filepath)),
     }
     console.log('During');
-    
+
     return attachment;
   } catch (err) {
     console.log("Failed to load attachment");

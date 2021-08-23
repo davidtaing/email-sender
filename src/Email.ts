@@ -1,4 +1,3 @@
-import { fileURLToPath } from 'url';
 import { Attachment, loadAttachment } from './Attachment';
 
 const FROM_EMAIL: string = process.env.SENDGRID_FROM_EMAIL;
@@ -26,9 +25,11 @@ export function createEmail(
   templateId = TEMPLATE_ID,
 ): Email {
   let paths = splitDelimitedString(filepaths);
+
   console.log('Before');
   let attachments = paths.map(async (path) => await loadAttachment(path));
   console.log('After');
+  
   return {
     to: splitDelimitedString(to),
     from: from,

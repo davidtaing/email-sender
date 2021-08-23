@@ -8,10 +8,10 @@ import { createEmail } from './Email';
 sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 const XLSX_PATH: string = process.env.DATA_SOURCE_XLSX;
 
-const parsedEmailData = loadXlsxToJSON().map((data: any) => {
+const parsedEmailData = loadXLSXToJSON().map((data: any) => {
   let { firstName, to, property, filepaths } = data;
   return createEmail(firstName, to, property, filepaths);
-})
+});
 
 function sendEmail(msg) {
   sgMail
@@ -24,7 +24,8 @@ function sendEmail(msg) {
     });
 }
 
-function loadXlsxToJSON(path: string = XLSX_PATH) {
+// Loads XLSX spreadsheet and Parses to JSON
+function loadXLSXToJSON(path: string = XLSX_PATH) {
   try {
     let wb = XLSX.readFile(path);
     let firstSheetName = wb.SheetNames[0]
