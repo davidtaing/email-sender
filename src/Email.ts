@@ -25,10 +25,14 @@ export function createEmail(
   from = FROM_EMAIL, 
   templateId = TEMPLATE_ID,
 ): Email {
+  let paths = splitDelimitedString(filepaths);
+  console.log('Before');
+  let attachments = paths.map(async (path) => await loadAttachment(path));
+  console.log('After');
   return {
     to: splitDelimitedString(to),
     from: from,
-    attachments: splitDelimitedString(filepaths).map(filepath => loadAttachment(filepath)),
+    attachments: attachments,
     templateId: templateId,
     dynamicTemplateData: {
       firstName: firstName,

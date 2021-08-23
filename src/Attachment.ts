@@ -23,6 +23,8 @@ export async function loadAttachment(filepath: string) {
       filename: path.basename(filepath),
       type: mime.lookup(path.basename(filepath)),
     }
+    console.log('During');
+    
     return attachment;
   } catch (err) {
     console.log("Failed to load attachment");
