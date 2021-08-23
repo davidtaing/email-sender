@@ -8,8 +8,8 @@ import { Email, createEmail } from "./Email";
 sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 const XLSX_PATH: string = process.env.DATA_SOURCE_XLSX;
 
-let RAW_XLSX_DATA;
-let PARSED_EMAIL_DATA;
+let RAW_XLSX_DATA = [];
+let PARSED_EMAIL_DATA = [];
 
 // Loads XLSX spreadsheet and Parses to JSON
 function loadXLSXToJSON(path: string = XLSX_PATH) {
@@ -52,11 +52,9 @@ async function initEmailData(path: string = XLSX_PATH) {
   PARSED_EMAIL_DATA = await parseEmailsFromXLSX(RAW_XLSX_DATA);
 }
 
-function sendEmail(msg) {
+async function sendEmail(msg) {
   try {
-    sgMail.send(msg)
-      .then(() => console.log("Successfully sent email."));
-
+    await sgMail.send(msg);
   } catch (err) {
     console.log("An error occured while sending an email.");
     console.error(err);
@@ -67,6 +65,8 @@ async function main() : Promise<void> {
   await initEmailData();
 
   console.log(PARSED_EMAIL_DATA);
+
+  PARSED_EMAIL_DATA.forEach(item => sendEmail(item));
 }
 
 main();
