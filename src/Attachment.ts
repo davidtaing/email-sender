@@ -19,15 +19,15 @@ export async function loadAttachment(filepath: string) : Promise<Attachment> {
 
     // then parse to a POJO
     let attachment : Attachment = {
-      content: data.toString('base64'),
+      content: data.toString("base64"),
       filename: path.basename(filepath),
       type: mime.lookup(path.basename(filepath)),
     }
-    console.log('During');
 
-    return attachment;
+    console.log(`Attachment Loaded: ${filepath}`);
+    return Promise.resolve(attachment);
   } catch (err) {
-    console.log("Failed to load attachment");
-    console.log(err);
+    console.log(`Failed to load attachment: ${filepath}`);
+    return Promise.reject(err);
   }
 };

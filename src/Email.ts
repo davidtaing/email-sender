@@ -9,31 +9,34 @@ export interface Email {
   subject?: string;
   text?: string;
   html?: string;
-  attachments?: Promise<Attachment>[];
+  attachments?: Attachment[];
   templateId?: string;
   dynamicTemplateData?: {};
 }
 
 // Init Email object to send to the SendGrid Email API
 // The input spreadsheet may have multiple emails (to field) and attachments (filepath field) delimted by a semi colon (;)
-export function createEmail(
+export async function createEmail(
   firstName, 
   to, 
   property, 
   filepaths, 
   from = FROM_EMAIL, 
   templateId = TEMPLATE_ID,
-): Email {
+): Promise<Email> {
   let paths = splitDelimitedString(filepaths);
 
   console.log('Before');
-  let attachments = paths.map(async (path) => await loadAttachment(path));
+  let attachments : Array<Attachment> = [];
+  for (let path of paths) {
+    attachments.push(await loadAttachment(path));
+  }
   console.log('After');
   
   return {
     to: splitDelimitedString(to),
     from: from,
-    attachments: attachments,
+    attachments: (attachments.length >= 1 ? attachments : null),
     templateId: templateId,
     dynamicTemplateData: {
       firstName: firstName,
