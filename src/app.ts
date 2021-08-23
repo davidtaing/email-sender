@@ -58,6 +58,8 @@ async function sendEmail(msg) {
   } catch (err) {
     console.log("An error occured while sending an email.");
     console.error(err);
+    // TODO work on error handling here. This should log responses from the SendGrid API
+    console.log(err.response.body.errors);
   }
 }
 
