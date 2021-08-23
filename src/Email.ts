@@ -10,12 +10,13 @@ export interface Email {
   subject?: string;
   text?: string;
   html?: string;
-  attachments?: Attachment[];
+  attachments?: Promise<Attachment>[];
   templateId?: string;
   dynamicTemplateData?: {};
 }
 
 // Init Email object to send to the SendGrid Email API
+// The input spreadsheet may have multiple emails (to field) and attachments (filepath field) delimted by a semi colon (;)
 export function createEmail(
   firstName, 
   to, 
@@ -36,7 +37,8 @@ export function createEmail(
   };
 }
 
-// Allows us to convert the email and attachment cells to be converted into arrays.
+// Splits a string that is delimited by a semi colon.
+// Primarily used to split multiple emails or attachments in a single spreadsheet cell.
 function splitDelimitedString(string: string) : string[] {
   return string.split(';');
 }
