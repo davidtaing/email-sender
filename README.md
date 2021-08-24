@@ -4,7 +4,7 @@ Sends email using data from a XLSX spreadsheet using the SendGrid API.
 Working in real estate, there exists certain pain points within our organisation where we have repetitve tasks. 
 This project aims to address a need to batch send emails with individual attachments. This is basically a mail merge program with individual attachments.
 
-This project is intended as a proof of concept only. I do not intend to use this in my day-to-day task.
+This project is intended as a proof of concept only. I do not intend to use this "in the wild".
 
 # Overview
 1 - Loads data from XLSX spreadsheet and converts to an array of JSON objects.
